@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ChunkManager : MonoBehaviour
+{
+    [Header(" Elements ")]
+    [SerializeField] private Chunk[] chunksPrefabs;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Vector3 chunkPosition = Vector3.zero;
+
+        for (int i = 0; i < 5; i++)
+        {
+            Chunk chunkToCreate = chunksPrefabs[Random.Range(0, chunksPrefabs.Length)];
+
+            if (i > 0)
+                chunkPosition.z += chunkToCreate.GetLength() / 2;
+            
+            chunkPosition.y = -5f;
+
+            Chunk chunkInstance = Instantiate(chunkToCreate, chunkPosition, Quaternion.identity);
+
+            chunkPosition.z += chunkInstance.GetLength() / 2;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
