@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	public static PlayerController instance;
+	
 	[Header(" Settings ")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float roadWidth;
-    //private bool canMove;
+    private bool canMove;
     
     [Header(" Control ")]
     [SerializeField] private float slideSpeed;
@@ -16,19 +18,55 @@ public class PlayerController : MonoBehaviour
     
     [Header(" Elements ")]
     [SerializeField] private CrowdSystem crowdSystem;
+    [SerializeField] private PlayerAnimator playerAnimator;
     
+    
+    private void Awake()
+    {
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
+    }
 
     void Start()
     {
-        
+        GameManager.onGameStateChanged += GameStateChangedCallback;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.onGameStateChanged -= GameStateChangedCallback;
+    }
+    
+    private void GameStateChangedCallback(GameManager.GameState gameState)
+    {
+        if (gameState == GameManager.GameState.Game)
+            StartMoving();
     }
 
 
     void Update()
     {
+    	if(canMove){
     	MoveForward();
     	ManageControl();
+    	}
         
+    }
+    
+    private void StartMoving()
+    {
+        canMove = true;
+
+        playerAnimator.Run();
+    }
+
+    private void StopMoving()
+    {
+        canMove = false;
+
+        playerAnimator.Idle();
     }
     
     private void MoveForward()
