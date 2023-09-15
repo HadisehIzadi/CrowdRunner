@@ -5,7 +5,7 @@ using UnityEngine;
 public class CrowdSystem : MonoBehaviour
 {
 //    [Header(" Elements ")]
-//    [SerializeField] private PlayerAnimator playerAnimator;
+    [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private Transform runnersParent;
     [SerializeField] private GameObject runnerPrefab;
 
@@ -76,7 +76,7 @@ public class CrowdSystem : MonoBehaviour
         for (int i = 0; i < amount; i++)
             Instantiate(runnerPrefab, runnersParent);
 
-       // playerAnimator.Run();
+        playerAnimator.Run();
     }
 
     private void RemoveRunners(int amount)
